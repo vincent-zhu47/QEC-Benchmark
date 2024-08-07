@@ -25,18 +25,20 @@ hypergraph, num_vertices = stim_to_hypergraph(detector_error_model)
 
 detection_events = [i for i, x in enumerate(detection_events[0]) if x == True]
 
-# hyperion, hyperion_subgraph, latency = hypergraph_to_mwpf(hypergraph, num_vertices, detection_events)
+mwpf_hypergraph = hypergraph_to_mwpf(hypergraph)
+
+hyperion, hyperion_subgraph, latency = run_mwpf(mwpf_hypergraph, num_vertices, detection_events)
       
-# print(hyperion_subgraph)  # out: [3, 5], weighted 160
-# _, bound = hyperion.subgraph_range()
-# print((bound.lower, bound.upper))  # out: (Fraction(160, 1), Fraction(160, 1))
-# print(latency)
-
-start = time.time()
-fusion_subgraph, total_weight, latency = hypergraph_to_fb(hypergraph, num_vertices, detection_events)
-end = time.time()
-print(end-start-latency)
-
-print(fusion_subgraph)
-print(total_weight)
+print(hyperion_subgraph)  # out: [3, 5], weighted 160
+_, bound = hyperion.subgraph_range()
+print((bound.lower, bound.upper))  # out: (Fraction(160, 1), Fraction(160, 1))
 print(latency)
+
+# start = time.time()
+# fusion_subgraph, total_weight, latency = hypergraph_to_fb(hypergraph, num_vertices, detection_events)
+# end = time.time()
+# print(end-start-latency)
+
+# print(fusion_subgraph)
+# print(total_weight)
+# print(latency)

@@ -16,6 +16,7 @@ def stim_to_hypergraph(dem: stim.DetectorErrorModel):
     return hyperedges, dem.num_detectors
 
 def qecp_to_hypergraph(simulator: qecp.Simulator, noise_model: qecp.NoiseModel):
+    
     hypergraph = qecp.create_hypergraph(simulator, noise_model)
     hyperedges = []
 

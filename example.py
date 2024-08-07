@@ -3,52 +3,7 @@ import pymatching
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-from logical_error_rate import *
-
-def create_error_plots(latency: list, count: list, distance: int):
-    single_error_rate, single_prob = single_cond_gate(latency, count, distance)
-
-    plt.cla()
-    plt.loglog(single_error_rate, single_prob, ".-")
-    plt.xlim(1e0, 1e1)
-    plt.ylim(1e-9, 1e0)
-    plt.title("Logical Error Rate Distribution for \n Single Conditional Gate")
-    plt.ylabel("Probability")
-    plt.xlabel("Logical Error Rate")
-    plt.show()
-    # plt.savefig("pymatching_single.pdf")
-
-    trials = 1000000
-    n = 3
-    multi_error_rate, multi_prob = multi_cond_gate(latency, count, trials, n, distance)
-
-    plt.cla()
-    plt.loglog(multi_error_rate, multi_prob, ".-")
-    plt.xlim(1e0, 1e1)
-    plt.ylim(1e-9, 1e0)
-    if n == 1:
-        plt.title("Logical Error Rate Distribution for \n Single Conditional Gate")
-    else:
-        plt.title(f"Logical Error Rate Distribution for \n {n} Multi-Conditioned Gates")
-    plt.ylabel("Probability")
-    plt.xlabel("Logical Error Rate")
-    plt.show()
-    # plt.savefig("pymatching_multi.pdf")
-    
-    consec_error_rate, consec_prob = consec_cond_gate(latency, count, trials, n, distance)
-
-    plt.cla()
-    plt.loglog(consec_error_rate, consec_prob, ".-")
-    plt.xlim(1e0, 1e1)
-    plt.ylim(1e-9, 1e0)
-    if n == 1:
-        plt.title("Logical Error Rate Distribution for \n Single Conditional Gate")
-    else:
-        plt.title(f"Logical Error Rate Distribution for \n {n} Consecutive Conditional Gates")
-    plt.ylabel("Probability")
-    plt.xlabel("Logical Error Rate")
-    plt.show()
-    # plt.savefig("pymatching_consec.pdf")
+from analysis import *
     
 circuit = stim.Circuit.generated(
     "surface_code:rotated_memory_x",
@@ -65,6 +20,7 @@ detection_events, observable_flips = sampler.sample(1, separate_observables=True
 
 detector_error_model = circuit.detector_error_model(decompose_errors=True)
 matcher = pymatching.Matching.from_detector_error_model(detector_error_model)
+print(matcher.edges())
 
 latency = np.empty(shape=1000000)
 
